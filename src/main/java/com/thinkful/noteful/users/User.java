@@ -1,4 +1,4 @@
-package com.thinkful.noteful.user;
+package com.thinkful.noteful.users;
 
 import java.util.Date;
 
