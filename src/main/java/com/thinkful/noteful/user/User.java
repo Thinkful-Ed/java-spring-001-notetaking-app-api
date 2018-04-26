@@ -1,4 +1,4 @@
-package com.thinkful.noteful.notes;
+package com.thinkful.noteful.user;
 
 import java.util.Date;
 
@@ -8,9 +8,9 @@ import javax.persistence.EntityListeners;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
-import javax.validation.constraints.NotBlank;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
@@ -19,18 +19,17 @@ import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 @Entity
+@Table(name = "note_users")
 @EntityListeners(AuditingEntityListener.class)
 @JsonIgnoreProperties(value={"createdAt", "updatedAt"}, allowGetters = true)
-public class Note {
-
+public class User {
+    
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue( strategy = GenerationType.AUTO)
     private Long id;
 
-    @NotBlank
-    private String title;
-
-    private String content;
+    private String username;
+    private String password;
 
     @Column(nullable = false, updatable = false)
     @Temporal(TemporalType.TIMESTAMP)
@@ -42,22 +41,22 @@ public class Note {
     @LastModifiedDate
     private Date updatedAt;
 
-    public String getTitle(){
-        return this.title;
+    public void setUsername(String username){
+        this.username = username;
     }
 
-    public void setTitle(String title){
-        this.title = title;
+    public String getUsername(){
+        return this.username;
     }
 
-    public String getContent(){
-        return this.content;
+    public void setPassword(String password){
+        this.password = password;
     }
 
-    public void setContent(String content){
-        this.content = content;
+    public String getPassword(){
+        return this.password;
     }
-
+    
     public Date getCreatedAt(){
         return this.createdAt;
     }
@@ -73,5 +72,4 @@ public class Note {
     public void setUpdatedAt(Date updatedAt){
         this.updatedAt = updatedAt;
     }
-
 }
