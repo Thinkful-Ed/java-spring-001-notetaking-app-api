@@ -25,3 +25,4 @@ deploy:
   app: damp-coast-35809
   on:
     repo: vramdhanie/java-spring-001-notetaking-app-api
+    branch: staging
