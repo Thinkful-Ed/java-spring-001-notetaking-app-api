@@ -34,11 +34,7 @@ gradle bootRun
 ```
 This starts the embedded Tomcat server on port 8080.
 
-**NOTE**: Because Spring Security is in the dependency list a default user and password will be created automatically. In the output on the terminal  look for a line similar to:
-```
-Using generated security password: d63a6e17-f91e-404c-8f61-3489c4119923
-```
-and copy the generated password. A single user with username 'user' and that generated password has already been created for you.
+**NOTE**: A single user with username 'samwise' and password 'gamgee' has been configured in the _application.properties_ file.
 
 Visit http://localhost:8080 in your browser and log in to the application.
 
@@ -48,6 +44,6 @@ To test the CRUD end points use CURL.
 ### Users
 #### Create a new User
 ```
-curl -u user:d63a6e17-f91e-404c-8f61-3489c4119923 -i -XPOST -d "{\"username\":\"samwise\", \"password\":\"gamgee\" }" -H "Content-Type:application/json" http://localhost:8080/api/users
+curl -u samwise:gamgee -i -XPOST -d "{\"username\":\"frodo\", \"password\":\"baggins\" }" -H "Content-Type:application/json" http://localhost:8080/api/users
 ```
-**Note:** The password changes everytime you restart the server
+
