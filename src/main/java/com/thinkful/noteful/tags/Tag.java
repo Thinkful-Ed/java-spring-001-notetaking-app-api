@@ -1,4 +1,4 @@
-package com.thinkful.noteful.notes;
+package com.thinkful.noteful.tags;
 
 import java.util.Date;
 import javax.persistence.Column;
@@ -10,24 +10,22 @@ import javax.persistence.Id;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 import javax.validation.constraints.NotBlank;
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 @Entity
 @EntityListeners(AuditingEntityListener.class)
 @JsonIgnoreProperties(value={"createdAt", "updatedAt"}, allowGetters = true)
-public class Note {
+public class Tag {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    private Long id;
+   @Id
+   @GeneratedValue( strategy = GenerationType.AUTO)
+   private Long id; 
 
-    @NotBlank
-    private String title;
-
-    private String content;
+   @NotBlank
+    private String name;
 
     @Column(nullable = false, updatable = false)
     @Temporal(TemporalType.TIMESTAMP)
@@ -39,20 +37,12 @@ public class Note {
     @LastModifiedDate
     private Date updatedAt;
 
-    public String getTitle(){
-        return this.title;
+    public String getName(){
+        return this.name;
     }
 
-    public void setTitle(String title){
-        this.title = title;
-    }
-
-    public String getContent(){
-        return this.content;
-    }
-
-    public void setContent(String content){
-        this.content = content;
+    public void setName(String name){
+        this.name = name;
     }
 
     public Date getCreatedAt(){
