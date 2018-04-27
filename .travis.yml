@@ -1,0 +1,27 @@
+language: java
+jdk:
+- oraclejdk8
+sudo: required
+env:
+  global:
+  - PGPORT=5432
+services:
+- postgresql
+addons:
+  apt:
+    packages:
+    - postgresql-9.6
+    - postgresql-contrib-9.6
+  postgresql: 9.6
+before_script:
+- sudo /etc/init.d/postgresql restart
+- psql -U postgres -c 'create database "noteful";'
+- psql -c "CREATE USER noteful_user WITH PASSWORD 'noteful_password';" -U postgres
+- psql -c "grant all privileges on database noteful to noteful_user;" -U postgres
+deploy:
+  provider: heroku
+  api_key:
+    secure: 1sFnDLahJHJfjRmUR0/zcE4XWpLGyLkKlkCtcZibLyi1QRrNA3jPSjUcRlseDoBkBWSaMPUUwLhY7Uf7epHEcuz4hy5Lt5tqVirtx0+Etar54B5m1QbvrPRtY9tUtfKRjif4wFcGVCaYgBIPQ6TlA2IaojYR5HGpx9dxn05na1KClhiZaPpAp9hhkLbiRO8v5Tz7knMMFj6DdlBGjGbttdiuEnBQwvQCgcdPnI0wJSEwbsJJISyTdCodmf+WqgVqgM+cw5v/7dYXFy6mkdERE2ofSdXHBaMaYIFbhqOauMNcmhR/P2Hvq5wLI1YjnQtnZgudveF/jabiYT6hcLbisV1PZaGpi4OFZBq4sVbqOr1S79J139WX3qg4zTg8lnD50AT2dGW0Z63Y8qfCvTThKJtCXIoz1yEmz4IGXxURfURskScPqrDpibSpClcd49TWIl95UHS6/Ul8xLL/gGDHq5YjlO+nhNipDwIPXNMdP6njJuQn15W5eaG5MvC/Kkmiq/9Q7lz6hDD54VnFT6DoU3Q2QfeUloIkwB7sk8cQLe0R7N09OFsE0F4e8p0cr55pRSupU0YjIlZ4bS47PdLOLQaNq3/cDH13yKj4UT0zjpXJVU6rHyJd31z7+nbDOI5c2rl6rNaqU5Bir18oKSbnQ1Go13aYchHRI364WnaaLUE=
+  app: damp-coast-35809
+  on:
+    branch: staging
