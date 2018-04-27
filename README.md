@@ -42,3 +42,12 @@ and copy the generated password. A single user with username 'user' and that gen
 
 Visit http://localhost:8080 in your browser and log in to the application.
 
+## Test End Points
+To test the CRUD end points use CURL.
+
+### Users
+#### Create a new User
+```
+curl -u user:d63a6e17-f91e-404c-8f61-3489c4119923 -i -XPOST -d "{\"username\":\"samwise\", \"password\":\"gamgee\" }" -H "Content-Type:application/json" http://localhost:8080/api/users
+```
+**Note:** The password changes everytime you restart the server
