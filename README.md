@@ -34,7 +34,8 @@ gradle bootRun
 ```
 This starts the embedded Tomcat server on port 8080.
 
-**NOTE**: A single user with username 'samwise' and password 'gamgee' has been configured in the _application.properties_ file.
+
+~~**NOTE**: A single user with username 'samwise' and password 'gamgee' has been configured in the _application.properties_ file.~~ **Security temporarily disabled**
 
 Visit http://localhost:8080 in your browser and log in to the application.
 
