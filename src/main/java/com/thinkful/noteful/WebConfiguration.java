@@ -7,7 +7,7 @@ import org.springframework.data.rest.core.config.RepositoryRestConfiguration;
 import org.springframework.data.rest.webmvc.config.RepositoryRestConfigurerAdapter;
 
 @Configuration
-public class WebConfiguration extends RepositoryRestConfigurerAdapter{
+public class WebConfiguration extends RepositoryRestConfigurerAdapter {
 
   @Override 
   public void configureRepositoryRestConfiguration(RepositoryRestConfiguration config) {

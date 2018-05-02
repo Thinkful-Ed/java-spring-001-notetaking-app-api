@@ -60,4 +60,15 @@ public class NoteController {
     Note updated = notesRepository.save(note);
     return updated;
   }
+
+  @RequestMapping(value = "/{id}", method = RequestMethod.DELETE)
+  public Note deleteNote(@PathVariable(value = "id") Long noteId) {
+    Note note = notesRepository.findById(noteId)
+          .orElseThrow(() -> new NoteException(
+                "Note", "id", noteId, "Note with given ID not found"));
+
+    notesRepository.delete(note);
+    
+    return note;
+  }
 }
