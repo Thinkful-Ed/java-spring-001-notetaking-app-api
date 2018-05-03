@@ -1,9 +1,9 @@
 package com.thinkful.noteful.notes;
 
+import com.thinkful.noteful.NoteException;
+
 import java.util.ArrayList;
 import java.util.List;
-
-import com.thinkful.noteful.NoteException;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -29,11 +29,14 @@ public class NoteController {
     return notes;
   }
 
+  /**
+   * Retireve the note with ID noteId.
+   */
   @RequestMapping(value = "/{id}", method = RequestMethod.GET)
   public Note getNoteById(@PathVariable(value = "id") Long noteId) {
     return notesRepository
-    .findById(noteId)
-    .orElseThrow(() -> new NoteException("Note", "id", noteId, "Note with ID not found"));
+          .findById(noteId)
+          .orElseThrow(() -> new NoteException("Note", "id", noteId, "Note with ID not found"));
   }
 
   /**
@@ -48,7 +51,10 @@ public class NoteController {
     return notesRepository.save(note);
   }
 
-  @RequestMapping(value="/{id}", method = RequestMethod.PUT)
+  /**
+   * Update a Note with the given values.
+   */
+  @RequestMapping(value = "/{id}", method = RequestMethod.PUT)
   public Note updateNote(@PathVariable(value = "id") Long noteId, @RequestBody Note updatedNote) {
     Note note = notesRepository.findById(noteId)
           .orElseThrow(() -> new NoteException(
@@ -61,6 +67,9 @@ public class NoteController {
     return updated;
   }
 
+  /**
+   * Delete the Note with the given ID.
+   */
   @RequestMapping(value = "/{id}", method = RequestMethod.DELETE)
   public Note deleteNote(@PathVariable(value = "id") Long noteId) {
     Note note = notesRepository.findById(noteId)
