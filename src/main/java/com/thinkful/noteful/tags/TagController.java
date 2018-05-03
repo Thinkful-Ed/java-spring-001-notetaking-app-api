@@ -62,7 +62,7 @@ public class TagController {
   }
 
   /**
-   * Delet tag with given id.
+   * Delete tag with given id.
    */
   @RequestMapping(value = "/{id}", method = RequestMethod.DELETE)
   public Tag deleteTag(@PathVariable(value = "id") Long tagId) {
