@@ -4,6 +4,8 @@ import com.fasterxml.jackson.annotation.JsonAlias;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.thinkful.noteful.notes.Note;
 import com.thinkful.noteful.users.User;
+
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import javax.persistence.Column;
@@ -26,6 +28,12 @@ import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 @EntityListeners(AuditingEntityListener.class)
 @JsonIgnoreProperties(value = {"createdAt", "updatedAt"}, allowGetters = true)
 public class Tag {
+
+  public Tag() {}
+
+  public Tag(Long id) {
+    this.id = id;
+  }
 
   @Id
   @GeneratedValue(strategy = GenerationType.AUTO)
@@ -51,6 +59,17 @@ public class Tag {
   @Temporal(TemporalType.TIMESTAMP)
   @LastModifiedDate
   private Date updatedAt;
+
+  public void addNote(Note note) {
+    if(this.notes == null) {
+      this.notes = new ArrayList<>();
+    }
+    this.notes.add(note);
+  }
+
+  public Long getId(){
+    return this.id;
+  }
 
   public String getName() {
     return this.name;

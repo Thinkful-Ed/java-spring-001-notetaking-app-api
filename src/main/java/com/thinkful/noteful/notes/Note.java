@@ -5,6 +5,8 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.thinkful.noteful.folders.Folder;
 import com.thinkful.noteful.tags.Tag;
 import com.thinkful.noteful.users.User;
+
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import javax.persistence.CascadeType;
@@ -63,6 +65,18 @@ public class Note {
   @Temporal(TemporalType.TIMESTAMP)
   @LastModifiedDate
   private Date updatedAt;
+
+  public void addTag(Tag tag) {
+    tag.addNote(this);
+    if (this.tags == null) {
+      this.tags = new ArrayList<>();
+    }
+    this.tags.add(tag);
+  }
+
+  public Long getId(){
+    return this.id;
+  }
 
   public String getTitle() {
     return this.title;

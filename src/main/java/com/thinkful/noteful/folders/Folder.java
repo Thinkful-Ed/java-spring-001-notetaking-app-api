@@ -53,6 +53,10 @@ public class Folder {
   @LastModifiedDate
   private Date updatedAt;
 
+  public Long getId(){
+    return this.id;
+  }
+
   public String getName() {
     return this.name;
   }
