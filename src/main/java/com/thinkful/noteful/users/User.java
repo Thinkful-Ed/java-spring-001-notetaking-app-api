@@ -27,6 +27,7 @@ public class User {
 
   private String username;
   private String password;
+  private String fullName;
 
   @Column(nullable = false, updatable = false)
   @Temporal(TemporalType.TIMESTAMP)
@@ -56,6 +57,14 @@ public class User {
 
   public String getPassword() {
     return this.password;
+  }
+
+  public void setFullName(String fullName) {
+    this.fullName = fullName;
+  }
+
+  public String getFullName() {
+    return this.fullName;
   }
   
   public Date getCreatedAt() {
