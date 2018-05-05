@@ -1,6 +1,7 @@
 package com.thinkful.noteful.tags;
 
 import com.fasterxml.jackson.annotation.JsonAlias;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.thinkful.noteful.notes.Note;
 import com.thinkful.noteful.users.User;
@@ -43,6 +44,7 @@ public class Tag {
   private String name;
 
   @ManyToMany(mappedBy = "tags")
+  @JsonIgnore
   private List<Note> notes;
 
   @ManyToOne
