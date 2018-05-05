@@ -44,11 +44,11 @@ public class Note {
   @ManyToOne
   private Folder folder;
 
-  @ManyToMany(cascade = CascadeType.ALL)
+  @ManyToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE})
   @JoinTable(
       name = "note_tag",
       joinColumns = @JoinColumn(name = "tagId", referencedColumnName = "id"),
-      inverseJoinColumns = @JoinColumn(name = "noteId", referencedColumnName = "id"))
+      inverseJoinColumns = @JoinColumn(name = "noteId", referencedColumnName = "id"))  
   private List<Tag> tags;
 
   @NotBlank
@@ -66,6 +66,14 @@ public class Note {
   @LastModifiedDate
   private Date updatedAt;
 
+  /**
+   * A convenience method for adding a tag to a Note.
+   * This is important because Note <--> Tag association
+   * is Many to Many bi-directional and it must be managed from one side
+   * to ensure consistency.
+   * 
+   * @param tag Tag The Tag to add to the Note
+   */
   public void addTag(Tag tag) {
     tag.addNote(this);
     if (this.tags == null) {
@@ -74,7 +82,14 @@ public class Note {
     this.tags.add(tag);
   }
 
-  public Long getId(){
+  /**
+   * The getId method is necessary to force the 
+   * JSON parser to output the id when converting to
+   * JSON.
+   * 
+   * @return Long the id of the Note
+   */
+  public Long getId() {
     return this.id;
   }
 
