@@ -1,10 +1,14 @@
 package com.thinkful.noteful.folders;
 
+import com.fasterxml.jackson.annotation.JsonAlias;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.thinkful.noteful.notes.Note;
+import com.thinkful.noteful.users.User;
 import java.util.Date;
 import java.util.List;
-
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.EntityListeners;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -16,81 +20,80 @@ import javax.persistence.TemporalType;
 import javax.validation.constraints.NotBlank;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
-import javax.persistence.EntityListeners;
-
-import com.fasterxml.jackson.annotation.JsonAlias;
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
-import com.thinkful.noteful.notes.Note;
-import com.thinkful.noteful.users.User;
+
 
 @Entity
 @EntityListeners(AuditingEntityListener.class)
-@JsonIgnoreProperties(value={"createdAt", "updatedAt"}, allowGetters = true)
+@JsonIgnoreProperties(value = {"createdAt", "updatedAt"}, allowGetters = true)
 public class Folder {
 
-    @Id
-    @GeneratedValue( strategy = GenerationType.AUTO)
-    private Long id;
+  @Id
+  @GeneratedValue(strategy = GenerationType.AUTO)
+  private Long id;
 
-    @NotBlank
-    private String name;
+  @NotBlank
+  private String name;
 
-    @OneToMany(mappedBy="folder")
-    private List<Note> notes;
+  @OneToMany(mappedBy = "folder")
+  private List<Note> notes;
 
-    @ManyToOne
-    @JoinColumn(name="userid")
-    @JsonAlias({"userId"})
-    private User user;
+  @ManyToOne
+  @JoinColumn(name = "userid")
+  @JsonAlias({"userId"})
+  private User user;
 
-    @Column(nullable = false, updatable = false)
-    @Temporal(TemporalType.TIMESTAMP)
-    @CreatedDate
-    private Date createdAt;
+  @Column(nullable = false, updatable = false)
+  @Temporal(TemporalType.TIMESTAMP)
+  @CreatedDate
+  private Date createdAt;
 
-    @Column(nullable = false)
-    @Temporal(TemporalType.TIMESTAMP)
-    @LastModifiedDate
-    private Date updatedAt;
+  @Column(nullable = false)
+  @Temporal(TemporalType.TIMESTAMP)
+  @LastModifiedDate
+  private Date updatedAt;
 
-    public String getName(){
-        return this.name;
-    }
+  public Long getId(){
+    return this.id;
+  }
 
-    public void setName(String name){
-        this.name = name;
-    }
+  public String getName() {
+    return this.name;
+  }
 
-    public Date getCreatedAt(){
-        return this.createdAt;
-    }
+  public void setName(String name) {
+    this.name = name;
+  }
 
-    public void setCreatedAt(Date createdAt){
-        this.createdAt = createdAt;
-    }
+  public Date getCreatedAt() {
+    return this.createdAt;
+  }
 
-    public Date getUpdatedAt(){
-        return this.updatedAt;
-    }
+  public void setCreatedAt(Date createdAt) {
+    this.createdAt = createdAt;
+  }
 
-    public void setUpdatedAt(Date updatedAt){
-        this.updatedAt = updatedAt;
-    }
+  public Date getUpdatedAt() {
+    return this.updatedAt;
+  }
 
-    public List<Note> getNotes(){
-        return this.notes;
-    }
+  public void setUpdatedAt(Date updatedAt) {
+    this.updatedAt = updatedAt;
+  }
 
-    public void setNotes(List<Note> notes){
-        this.notes = notes;
-    }
+  public List<Note> getNotes() {
+    return this.notes;
+  }
 
-    public User getUser(){
-        return this.user;
-    }
+  public void setNotes(List<Note> notes) {
+    this.notes = notes;
+  }
 
-    public void setUser(User user){
-        this.user = user;
-    }
+  public User getUser() {
+    return this.user;
+  }
+
+  public void setUser(User user) {
+    this.user = user;
+  }
 }

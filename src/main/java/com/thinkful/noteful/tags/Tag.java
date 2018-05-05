@@ -1,8 +1,14 @@
 package com.thinkful.noteful.tags;
 
+import com.fasterxml.jackson.annotation.JsonAlias;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.thinkful.noteful.notes.Note;
+import com.thinkful.noteful.users.User;
+
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EntityListeners;
@@ -17,82 +23,94 @@ import javax.persistence.TemporalType;
 import javax.validation.constraints.NotBlank;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
-
-import com.fasterxml.jackson.annotation.JsonAlias;
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import com.thinkful.noteful.notes.Note;
-import com.thinkful.noteful.users.User;
-
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 @Entity
 @EntityListeners(AuditingEntityListener.class)
-@JsonIgnoreProperties(value={"createdAt", "updatedAt"}, allowGetters = true)
+@JsonIgnoreProperties(value = {"createdAt", "updatedAt"}, allowGetters = true)
 public class Tag {
 
-   @Id
-   @GeneratedValue( strategy = GenerationType.AUTO)
-   private Long id; 
+  public Tag() {}
 
-   @NotBlank
-    private String name;
+  public Tag(Long id) {
+    this.id = id;
+  }
 
-    @ManyToMany(mappedBy = "tags")
-    private List<Note> notes;
+  @Id
+  @GeneratedValue(strategy = GenerationType.AUTO)
+  private Long id; 
 
-    @ManyToOne
-    @JoinColumn(name="userid")
-    @JsonAlias({"userId"})
-    private User user;
+  @NotBlank
+  private String name;
 
-    @Column(nullable = false, updatable = false)
-    @Temporal(TemporalType.TIMESTAMP)
-    @CreatedDate
-    private Date createdAt;
+  @ManyToMany(mappedBy = "tags")
+  @JsonIgnore
+  private List<Note> notes;
 
-    @Column(nullable = false)
-    @Temporal(TemporalType.TIMESTAMP)
-    @LastModifiedDate
-    private Date updatedAt;
+  @ManyToOne
+  @JoinColumn(name = "userid")
+  @JsonAlias({"userId"})
+  private User user;
 
-    public String getName(){
-        return this.name;
+  @Column(nullable = false, updatable = false)
+  @Temporal(TemporalType.TIMESTAMP)
+  @CreatedDate
+  private Date createdAt;
+
+  @Column(nullable = false)
+  @Temporal(TemporalType.TIMESTAMP)
+  @LastModifiedDate
+  private Date updatedAt;
+
+  public void addNote(Note note) {
+    if(this.notes == null) {
+      this.notes = new ArrayList<>();
     }
+    this.notes.add(note);
+  }
 
-    public void setName(String name){
-        this.name = name;
-    }
+  public Long getId(){
+    return this.id;
+  }
 
-    public Date getCreatedAt(){
-        return this.createdAt;
-    }
+  public String getName() {
+    return this.name;
+  }
 
-    public void setCreatedAt(Date createdAt){
-        this.createdAt = createdAt;
-    }
+  public void setName(String name) {
+    this.name = name;
+  }
 
-    public Date getUpdatedAt(){
-        return this.updatedAt;
-    }
+  public Date getCreatedAt() {
+    return this.createdAt;
+  }
 
-    public void setUpdatedAt(Date updatedAt){
-        this.updatedAt = updatedAt;
-    }
+  public void setCreatedAt(Date createdAt) {
+    this.createdAt = createdAt;
+  }
 
-    public List<Note> getNotes(){
-        return this.notes;
-    }
+  public Date getUpdatedAt() {
+    return this.updatedAt;
+  }
 
-    public void setNotes(List<Note> notes){
-        this.notes = notes;
-    }
+  public void setUpdatedAt(Date updatedAt) {
+    this.updatedAt = updatedAt;
+  }
 
-    public User getUser(){
-        return this.user;
-    }
+  public List<Note> getNotes() {
+    return this.notes;
+  }
 
-    public void setUser(User user){
-        this.user = user;
-    }
+  public void setNotes(List<Note> notes) {
+    this.notes = notes;
+  }
+
+  public User getUser() {
+    return this.user;
+  }
+
+  public void setUser(User user) {
+    this.user = user;
+  }
 
 }
