@@ -32,6 +32,13 @@ import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 @JsonIgnoreProperties(value = {"createdAt", "updatedAt"}, allowGetters = true)
 public class Note {
 
+  public Note() {}
+
+  public Note(String title, String content) {
+    this.setTitle(title);
+    this.setContent(content);
+  }
+
   @Id
   @GeneratedValue(strategy = GenerationType.AUTO)
   private Long id;

@@ -2,6 +2,7 @@ package com.thinkful.noteful.notes;
 
 import static org.hamcrest.Matchers.is;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -51,9 +52,7 @@ public class NoteControllerTest {
 
     this.notesRepository.deleteAll();
     for (int i = 0; i < noteTitles.length; i++) {
-      Note note = new Note();
-      note.setContent(noteContents[i]);
-      note.setTitle(noteTitles[i]);
+      Note note = new Note(noteTitles[i], noteContents[i]);
       this.notesRepository.save(note);
       notes.add(note);
     }
@@ -75,6 +74,16 @@ public class NoteControllerTest {
           .andExpect(content().contentType(contentType))
           .andExpect(jsonPath("$.id", is(this.notes.get(0).getId().intValue())))
           .andExpect(jsonPath("$.title", is(this.notes.get(0).getTitle())));
+  }
+
+  @Test
+  public void createNote() throws Exception {
+    String noteJson = "{\"title\": \"Title of created\", \"content\": \"Content of created\"}";
+    this.mockMvc.perform(post("/api/notes")
+          .contentType(contentType)
+          .content(noteJson))
+          .andExpect(status().isOk())
+          .andExpect(jsonPath("$.title", is("Title of created")));
   }
   
 }
