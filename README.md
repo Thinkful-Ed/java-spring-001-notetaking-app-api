@@ -35,16 +35,80 @@ gradle bootRun
 This starts the embedded Tomcat server on port 8080.
 
 
-~~**NOTE**: A single user with username 'samwise' and password 'gamgee' has been configured in the _application.properties_ file.~~ **Security temporarily disabled**
+### Live Server
+This program is running live on [heroku](https://damp-coast-35809.herokuapp.com/api/)
 
-Visit http://localhost:8080 in your browser and log in to the application.
+## End Points
 
-## Test End Points
-To test the CRUD end points use CURL.
-
-### Users
-#### Create a new User
+### Authentication
+#### Signup
 ```
-curl -u samwise:gamgee -i -XPOST -d "{\"username\":\"frodo\", \"password\":\"baggins\" }" -H "Content-Type:application/json" http://localhost:8080/api/users
+curl -X POST \
+  https://damp-coast-35809.herokuapp.com/api/users/sign-up \
+  -H 'Content-Type: application/json' \
+  -d '{
+	"username":"frodo",
+	"password":"baggins"
+}'
 ```
 
+#### Login
+```
+curl -X POST \
+  https://damp-coast-35809.herokuapp.com/login \
+  -H 'Content-Type: application/json' \
+  -d '{
+	"username":"frodo",
+	"password":"baggins"
+}'
+```
+Response is a header, use this header for future requests:
+
+```
+Authorization Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJmcm9kbyIsImV4cCI6MTUyNjE2NzQ1M30.CmXnlJaL2AwvEA5ZuKxZLYwhcLa-T2kXegcvz9tD4HnoDPO6Jhlk1l5IZhJYOnBUGzbOMw_TPIRZ6itTy-h5mA
+```
+
+### Notes
+#### GET
+```
+curl -X GET \
+  https://damp-coast-35809.herokuapp.com/api/notes/ \
+  -H 'Authorization: Bearer <TOKEN>' \
+```
+
+#### POST
+```
+curl -X POST \
+  https://damp-coast-35809.herokuapp.com/api/notes \
+  -H 'Authorization: Bearer <TOKEN>' \
+  -H 'Content-Type: application/json' \
+  -d '{
+	"title":"REST Docs",
+	"content": "Spring REST Docs needed here",
+	"tags":[1, 3, 2],
+  "folder": 5
+}'
+```
+
+*Note:* Tag ids and folder ids that do not exist are silently ignored
+
+#### PUT
+```
+curl -X PUT \
+  https://damp-coast-35809.herokuapp.com/api/notes/2 \
+  -H 'Authorization: Bearer <TOKEN>' \
+  -H 'Content-Type: application/json' \
+  -d '{
+	"title":"Cinco de Mayo",
+	"content": "Great Scott!!",
+	"tags":[2, 3, 7],
+	"folder":4
+}'
+```
+
+#### DELETE
+```
+curl -X DELETE \
+  https://damp-coast-35809.herokuapp.com/api/notes/2 \
+  -H 'Authorization: Bearer <TOKEN>' \
+```  

@@ -5,6 +5,8 @@ import com.thinkful.noteful.folders.Folder;
 import com.thinkful.noteful.folders.FolderRepository;
 import com.thinkful.noteful.tags.Tag;
 import com.thinkful.noteful.tags.TagRepository;
+import com.thinkful.noteful.users.User;
+import com.thinkful.noteful.users.UserRepository;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -14,6 +16,7 @@ import java.util.stream.Stream;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -33,6 +36,9 @@ public class NoteController {
 
   @Autowired
   FolderRepository folderRepository;
+
+  @Autowired
+  UserRepository userRepository;
 
   /**
    * Retrieves all notes.
@@ -79,6 +85,14 @@ public class NoteController {
       note.setFolder(folder);
     }
 
+    String username = SecurityContextHolder
+          .getContext()
+          .getAuthentication()
+          .getPrincipal()
+          .toString();
+    User user = userRepository.findByUsername(username);
+    note.setUser(user);
+
     return notesRepository.save(note);
   }
 
@@ -106,6 +120,13 @@ public class NoteController {
             .map(tagRepository::findById)
             .flatMap(o -> o.isPresent() ? Stream.of(o.get()) : Stream.empty())
             .collect(Collectors.toList()));
+    }
+
+    if (updatedNote.getFolder() != null) {
+      Folder folder = folderRepository
+            .findById(updatedNote.getFolder().getId())
+            .orElse(null);
+      note.setFolder(folder);
     }
     
     Note updated = notesRepository.save(note);
