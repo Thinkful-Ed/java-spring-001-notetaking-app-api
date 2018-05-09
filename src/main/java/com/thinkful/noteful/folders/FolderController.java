@@ -1,11 +1,14 @@
 package com.thinkful.noteful.folders;
 
 import com.thinkful.noteful.NoteException;
+import com.thinkful.noteful.users.User;
+import com.thinkful.noteful.users.UserRepository;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -18,6 +21,9 @@ public class FolderController {
 
   @Autowired
   FolderRepository folderRepository;
+
+  @Autowired
+  UserRepository userRepository;
 
   /**
    * Retrieve all folders.
@@ -45,6 +51,13 @@ public class FolderController {
    */
   @RequestMapping(method = RequestMethod.POST)
   public Folder createfolder(@RequestBody Folder folder) {
+    String username = SecurityContextHolder
+          .getContext()
+          .getAuthentication()
+          .getPrincipal()
+          .toString();
+    User user = userRepository.findByUsername(username);
+    folder.setUser(user);
     return folderRepository.save(folder);
   }
 

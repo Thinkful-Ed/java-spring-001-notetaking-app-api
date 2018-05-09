@@ -1,11 +1,14 @@
 package com.thinkful.noteful.tags;
 
 import com.thinkful.noteful.NoteException;
+import com.thinkful.noteful.users.User;
+import com.thinkful.noteful.users.UserRepository;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -18,6 +21,9 @@ public class TagController {
 
   @Autowired
   TagRepository tagRepository;
+
+  @Autowired
+  UserRepository userRepository;
 
   /**
    * Retrieve all tags.
@@ -44,6 +50,13 @@ public class TagController {
    */
   @RequestMapping(method = RequestMethod.POST)
   public Tag createTag(@RequestBody Tag tag) {
+    String username = SecurityContextHolder
+          .getContext()
+          .getAuthentication()
+          .getPrincipal()
+          .toString();
+    User user = userRepository.findByUsername(username);
+    tag.setUser(user);
     return tagRepository.save(tag);
   }
 

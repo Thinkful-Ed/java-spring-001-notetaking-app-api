@@ -1,6 +1,7 @@
 package com.thinkful.noteful.folders;
 
 import com.fasterxml.jackson.annotation.JsonAlias;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.thinkful.noteful.notes.Note;
 import com.thinkful.noteful.users.User;
@@ -28,6 +29,12 @@ import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 @JsonIgnoreProperties(value = {"createdAt", "updatedAt"}, allowGetters = true)
 public class Folder {
 
+  public Folder() {}
+
+  public Folder(Long id) {
+    this.id = id;
+  }
+
   @Id
   @GeneratedValue(strategy = GenerationType.AUTO)
   private Long id;
@@ -36,6 +43,7 @@ public class Folder {
   private String name;
 
   @OneToMany(mappedBy = "folder")
+  @JsonIgnore
   private List<Note> notes;
 
   @ManyToOne
