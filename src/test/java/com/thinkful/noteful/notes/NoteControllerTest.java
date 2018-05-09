@@ -12,13 +12,13 @@ import java.nio.charset.Charset;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.apache.el.parser.AstDynamicExpression;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
+import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.context.web.WebAppConfiguration;
 import org.springframework.test.web.servlet.MockMvc;
@@ -58,7 +58,8 @@ public class NoteControllerTest {
     }
   }
 
-  @Test
+@WithMockUser
+@Test
   public void readNotes() throws Exception {
     mockMvc.perform(get("/api/notes"))
           .andExpect(status().isOk())
@@ -67,6 +68,7 @@ public class NoteControllerTest {
           .andExpect(jsonPath("$[0].title", is(this.notes.get(0).getTitle())));
   }
 
+  @WithMockUser
   @Test
   public void readNote() throws Exception {
     mockMvc.perform(get("/api/notes/" + this.notes.get(0).getId()))
@@ -76,6 +78,7 @@ public class NoteControllerTest {
           .andExpect(jsonPath("$.title", is(this.notes.get(0).getTitle())));
   }
 
+  @WithMockUser
   @Test
   public void createNote() throws Exception {
     String noteJson = "{\"title\": \"Title of created\", \"content\": \"Content of created\"}";
