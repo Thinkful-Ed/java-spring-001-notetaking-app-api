@@ -2,9 +2,6 @@ package com.thinkful.noteful.auth;
 
 import static com.thinkful.noteful.auth.SecurityConstants.SIGN_UP_URL;
 
-import com.thinkful.noteful.users.UserRepository;
-
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
