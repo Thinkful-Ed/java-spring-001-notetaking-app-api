@@ -20,7 +20,6 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -62,7 +61,8 @@ public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilte
         Authentication auth
   ) throws IOException, ServletException {
     String token = Jwts.builder()
-          .setSubject(((org.springframework.security.core.userdetails.User)auth.getPrincipal()).getUsername())
+          .setSubject(((org.springframework.security.core.userdetails.User)auth
+                .getPrincipal()).getUsername())
           .setExpiration(new Date(System.currentTimeMillis() + EXPIRATION_TIME))
           .signWith(SignatureAlgorithm.HS512, JWT_SECRET.getBytes())
           .compact();
