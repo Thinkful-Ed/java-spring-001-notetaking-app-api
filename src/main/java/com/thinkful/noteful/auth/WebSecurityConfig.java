@@ -2,6 +2,9 @@ package com.thinkful.noteful.auth;
 
 import static com.thinkful.noteful.auth.SecurityConstants.SIGN_UP_URL;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
@@ -56,7 +59,15 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
   @Bean
   CorsConfigurationSource corsConfigurationSource() {
     final UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
-    source.registerCorsConfiguration("/**", new CorsConfiguration().applyPermitDefaultValues());
+    final CorsConfiguration configuration = new CorsConfiguration();
+    configuration.applyPermitDefaultValues();
+    configuration.setAllowCredentials(true);
+    List<String> headers = new ArrayList<>();
+    headers.add("Authorization");
+    headers.add("Cache-Control");
+    headers.add("Content-Type");
+    configuration.setAllowedHeaders(headers);
+    source.registerCorsConfiguration("/**", configuration);
     return source;
   }
 }
