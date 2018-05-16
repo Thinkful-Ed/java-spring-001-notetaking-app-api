@@ -36,6 +36,13 @@ public class Tag {
     this.id = id;
   }
 
+  /**
+   * Simple convenience for interpreting ids sent as strings via HTTP.
+   */
+  public Tag(String id) {
+    this(Long.parseLong(id));
+  }
+
   @Id
   @GeneratedValue(strategy = GenerationType.AUTO)
   private Long id; 
