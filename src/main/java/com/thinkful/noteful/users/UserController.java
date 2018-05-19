@@ -17,10 +17,10 @@ public class UserController {
   @Autowired
   private BCryptPasswordEncoder bCryptPasswordEncoder;
 
-  @PostMapping("/sign-up")
-  public void signup(@RequestBody User user) {
+  @PostMapping("/")
+  public User signup(@RequestBody User user) {
     user.setPassword(bCryptPasswordEncoder.encode(user.getPassword()));
-    userRepository.save(user);
+    return userRepository.save(user);
   }
 
 }
