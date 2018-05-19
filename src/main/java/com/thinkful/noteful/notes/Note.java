@@ -2,6 +2,7 @@ package com.thinkful.noteful.notes;
 
 import com.fasterxml.jackson.annotation.JsonAlias;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.thinkful.noteful.folders.Folder;
 import com.thinkful.noteful.tags.Tag;
 import com.thinkful.noteful.users.User;
@@ -30,6 +31,7 @@ import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 @Entity
 @EntityListeners(AuditingEntityListener.class)
 @JsonIgnoreProperties(value = {"createdAt", "updatedAt"}, allowGetters = true)
+@JsonSerialize(using = NoteSerializer.class)
 public class Note {
 
   public Note() {}
@@ -49,6 +51,7 @@ public class Note {
   private User user;
 
   @ManyToOne
+  @JsonAlias({"folderId"})
   private Folder folder;
 
   @ManyToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE})

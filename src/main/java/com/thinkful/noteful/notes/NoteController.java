@@ -131,15 +131,6 @@ public class NoteController {
 
     if (updatedNote.getTitle() != null && updatedNote.getTitle().trim().length() > 0) {            
       note.setTitle(updatedNote.getTitle());
-    } else {
-      throw new NoteException(
-        "Note",
-        "title",
-        note.getTitle(),
-        "missing title in request body",
-        HttpStatus.UNPROCESSABLE_ENTITY,
-        NoteStatus.VALIDATION_ERROR
-      );
     }
 
     if (updatedNote.getContent() != null) {

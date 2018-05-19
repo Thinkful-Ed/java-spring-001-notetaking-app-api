@@ -111,4 +111,8 @@ public class Folder {
   public void setUser(User user) {
     this.user = user;
   }
+
+  public String toString() {
+    return String.format("Folder = (%d, %s)", getId(), getName());
+  }
 }
