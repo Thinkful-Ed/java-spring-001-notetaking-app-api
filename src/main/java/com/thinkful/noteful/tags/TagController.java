@@ -1,6 +1,7 @@
 package com.thinkful.noteful.tags;
 
 import com.thinkful.noteful.NoteException;
+import com.thinkful.noteful.NoteStatus;
 import com.thinkful.noteful.users.User;
 import com.thinkful.noteful.users.UserRepository;
 
@@ -8,6 +9,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -42,7 +44,13 @@ public class TagController {
   public Tag getTagById(@PathVariable(value = "id") Long tagId) {
     return tagRepository
           .findById(tagId)
-          .orElseThrow(() -> new NoteException("Tag", "id", tagId, "Tag with given id not found"));
+          .orElseThrow(() -> new NoteException(
+            "Tag", 
+            "id", 
+            tagId, 
+            "Tag with given id not found",
+            HttpStatus.UNPROCESSABLE_ENTITY,
+            NoteStatus.DATA_INTEGRITY_ERROR));
   }
 
   /**
@@ -64,9 +72,17 @@ public class TagController {
    * Update the tag name.
    */
   @RequestMapping(value = "/{id}", method = RequestMethod.PUT)
-  public Tag updateTag(@PathVariable(value = "id")Long tagId, @RequestBody Tag updatedTag) {
+  public Tag updateTag(
+        @PathVariable(value = "id")Long tagId, 
+        @RequestBody Tag updatedTag) {
     Tag tag = tagRepository.findById(tagId)
-          .orElseThrow(() -> new NoteException("Tag", "id", tagId, "Tag with given id not found"));
+          .orElseThrow(() -> new NoteException(
+            "Tag", 
+            "id", 
+            tagId, 
+            "Tag with given id not found",
+            HttpStatus.UNPROCESSABLE_ENTITY,
+            NoteStatus.DATA_INTEGRITY_ERROR));
 
     tag.setName(updatedTag.getName());
 
@@ -80,7 +96,13 @@ public class TagController {
   @RequestMapping(value = "/{id}", method = RequestMethod.DELETE)
   public Tag deleteTag(@PathVariable(value = "id") Long tagId) {
     Tag tag = tagRepository.findById(tagId)
-          .orElseThrow(() -> new NoteException("Tag", "id", tagId, "Tag with given id not found"));
+          .orElseThrow(() -> new NoteException(
+            "Tag", 
+            "id", 
+            tagId, 
+            "Tag with given id not found",
+            HttpStatus.UNPROCESSABLE_ENTITY,
+            NoteStatus.DATA_INTEGRITY_ERROR));
     tagRepository.delete(tag);
     return tag;      
   }

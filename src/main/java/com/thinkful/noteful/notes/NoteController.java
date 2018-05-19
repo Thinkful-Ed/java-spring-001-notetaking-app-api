@@ -1,6 +1,7 @@
 package com.thinkful.noteful.notes;
 
 import com.thinkful.noteful.NoteException;
+import com.thinkful.noteful.NoteStatus;
 import com.thinkful.noteful.folders.Folder;
 import com.thinkful.noteful.folders.FolderRepository;
 import com.thinkful.noteful.tags.Tag;
@@ -57,7 +58,13 @@ public class NoteController {
   public Note getNoteById(@PathVariable(value = "id") Long noteId) {
     return notesRepository
           .findById(noteId)
-          .orElseThrow(() -> new NoteException("Note", "id", noteId, "Note with ID not found"));
+          .orElseThrow(() -> new NoteException(
+            "Note", 
+            "id", 
+            noteId, 
+            "Note with ID not found",
+            HttpStatus.UNPROCESSABLE_ENTITY,
+            NoteStatus.DATA_INTEGRITY_ERROR));
   }
 
   /**
@@ -103,7 +110,12 @@ public class NoteController {
   public Note updateNote(@PathVariable(value = "id") Long noteId, @RequestBody Note updatedNote) {
     Note note = notesRepository.findById(noteId)
           .orElseThrow(() -> new NoteException(
-                "Note", "id", noteId, "Note with given ID not found"));
+            "Note", 
+            "id", 
+            noteId, 
+            "Note with ID not found",
+            HttpStatus.UNPROCESSABLE_ENTITY,
+            NoteStatus.DATA_INTEGRITY_ERROR));
 
     if (updatedNote.getTitle() != null) {            
       note.setTitle(updatedNote.getTitle());
@@ -140,7 +152,12 @@ public class NoteController {
   public ResponseEntity<Note> deleteNote(@PathVariable(value = "id") Long noteId) {
     Note note = notesRepository.findById(noteId)
           .orElseThrow(() -> new NoteException(
-                "Note", "id", noteId, "Note with given ID not found"));
+            "Note", 
+            "id", 
+            noteId, 
+            "Note with ID not found",
+            HttpStatus.UNPROCESSABLE_ENTITY,
+            NoteStatus.DATA_INTEGRITY_ERROR));
 
     notesRepository.delete(note);
     
@@ -160,10 +177,22 @@ public class NoteController {
       @PathVariable(value = "tagId") Long tagId
   ) {
     Note note = notesRepository.findById(id)
-          .orElseThrow(() -> new NoteException("Note", "id", id, "Note with given id not found"));
+          .orElseThrow(() -> new NoteException(
+            "Note", 
+            "id", 
+            id, 
+            "Note with ID not found",
+            HttpStatus.UNPROCESSABLE_ENTITY,
+            NoteStatus.DATA_INTEGRITY_ERROR));
 
     Tag tag = tagRepository.findById(tagId)
-          .orElseThrow(() -> new NoteException("Tag", "id", tagId, "Tag with given id not found"));
+          .orElseThrow(() -> new NoteException(
+            "Tag", 
+            "id", 
+            tagId, 
+            "Tag with ID not found",
+            HttpStatus.UNPROCESSABLE_ENTITY,
+            NoteStatus.DATA_INTEGRITY_ERROR));
 
     note.addTag(tag);
     

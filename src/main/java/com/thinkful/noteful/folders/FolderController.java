@@ -1,6 +1,7 @@
 package com.thinkful.noteful.folders;
 
 import com.thinkful.noteful.NoteException;
+import com.thinkful.noteful.NoteStatus;
 import com.thinkful.noteful.users.User;
 import com.thinkful.noteful.users.UserRepository;
 
@@ -8,6 +9,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -43,7 +45,12 @@ public class FolderController {
     return folderRepository
           .findById(folderId)
           .orElseThrow(() -> new NoteException(
-                "folder", "id", folderId, "folder with given id not found"));
+                "Folder", 
+                "id", 
+                folderId, 
+                "folder with given id not found",
+                HttpStatus.UNPROCESSABLE_ENTITY,
+                NoteStatus.DATA_INTEGRITY_ERROR));
   }
 
   /**
@@ -69,7 +76,12 @@ public class FolderController {
         @RequestBody Folder updatedfolder) {
     Folder folder = folderRepository.findById(folderId)
           .orElseThrow(() -> new NoteException(
-                "folder", "id", folderId, "folder with given id not found"));
+                "Folder", 
+                "id", 
+                folderId, 
+                "folder with given id not found",
+                HttpStatus.UNPROCESSABLE_ENTITY,
+                NoteStatus.DATA_INTEGRITY_ERROR));
 
     folder.setName(updatedfolder.getName());
 
@@ -84,7 +96,12 @@ public class FolderController {
   public Folder deletefolder(@PathVariable(value = "id") Long folderId) {
     Folder folder = folderRepository.findById(folderId)
           .orElseThrow(() -> new NoteException(
-                "folder", "id", folderId, "folder with given id not found"));
+                "Folder", 
+                "id", 
+                folderId, 
+                "folder with given id not found",
+                HttpStatus.UNPROCESSABLE_ENTITY,
+                NoteStatus.DATA_INTEGRITY_ERROR));
     folderRepository.delete(folder);
     return folder;      
   }
