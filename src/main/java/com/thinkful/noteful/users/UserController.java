@@ -55,7 +55,20 @@ public class UserController {
         NoteStatus.VALIDATION_ERROR
       );
     }
+
+    User existingUser = userRepository.findByUsername(user.getUsername().trim());
     
+    if (existingUser != null) {
+      throw new NoteException(
+        "User",
+        "username",
+        user.getUsername(),
+        "The username already exists",
+        HttpStatus.UNPROCESSABLE_ENTITY,
+        NoteStatus.VALIDATION_ERROR
+      );
+    }
+
     user.setPassword(bCryptPasswordEncoder.encode(user.getPassword()));
     return userRepository.save(user);
   }

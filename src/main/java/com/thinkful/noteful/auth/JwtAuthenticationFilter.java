@@ -34,6 +34,7 @@ public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilte
 
   public JwtAuthenticationFilter(AuthenticationManager authenticationManager) {
     this.authenticationManager = authenticationManager;
+    super.setAuthenticationFailureHandler(new JwtAuthenticationFailureHandler());
     setRequiresAuthenticationRequestMatcher(new AntPathRequestMatcher("/api/login"));
   }
 

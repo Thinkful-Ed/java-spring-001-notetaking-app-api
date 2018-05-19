@@ -3,7 +3,8 @@ package com.thinkful.noteful;
 public enum NoteStatus {
   
   VALIDATION_ERROR("ValidationError"),
-  DATA_INTEGRITY_ERROR("DataIntegrityError");
+  DATA_INTEGRITY_ERROR("DataIntegrityError"),
+  AUTHENTICATION_FAILURE("AuthenticationFailure");
 
   private final String value;
 
