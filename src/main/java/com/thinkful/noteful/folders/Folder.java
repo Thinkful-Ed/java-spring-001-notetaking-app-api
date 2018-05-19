@@ -3,6 +3,7 @@ package com.thinkful.noteful.folders;
 import com.fasterxml.jackson.annotation.JsonAlias;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.thinkful.noteful.notes.Note;
 import com.thinkful.noteful.users.User;
 import java.util.Date;
@@ -27,6 +28,7 @@ import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 @Entity
 @EntityListeners(AuditingEntityListener.class)
 @JsonIgnoreProperties(value = {"createdAt", "updatedAt"}, allowGetters = true)
+@JsonSerialize(using = FolderSerializer.class)
 public class Folder {
 
   public Folder() {}

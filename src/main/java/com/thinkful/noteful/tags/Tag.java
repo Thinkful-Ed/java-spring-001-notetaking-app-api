@@ -3,6 +3,7 @@ package com.thinkful.noteful.tags;
 import com.fasterxml.jackson.annotation.JsonAlias;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.thinkful.noteful.notes.Note;
 import com.thinkful.noteful.users.User;
 
@@ -28,6 +29,7 @@ import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 @Entity
 @EntityListeners(AuditingEntityListener.class)
 @JsonIgnoreProperties(value = {"createdAt", "updatedAt"}, allowGetters = true)
+@JsonSerialize(using = TagSerializer.class)
 public class Tag {
 
   public Tag() {}
