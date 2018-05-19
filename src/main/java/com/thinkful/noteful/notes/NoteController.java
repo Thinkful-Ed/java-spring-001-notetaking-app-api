@@ -76,6 +76,18 @@ public class NoteController {
    */
   @RequestMapping(method = RequestMethod.POST)
   public Note createNote(@RequestBody Note note) {
+
+    if (note.getTitle() == null || note.getTitle().trim().length() == 0) {
+      throw new NoteException(
+        "Note",
+        "title",
+        note.getTitle(),
+        "missing title in request body",
+        HttpStatus.UNPROCESSABLE_ENTITY,
+        NoteStatus.VALIDATION_ERROR
+      );
+    }
+
     if (note.getTags() != null) {
       List<Tag> tags = note.getTags();
       note.setTags(tags.stream()
@@ -117,8 +129,17 @@ public class NoteController {
             HttpStatus.UNPROCESSABLE_ENTITY,
             NoteStatus.DATA_INTEGRITY_ERROR));
 
-    if (updatedNote.getTitle() != null) {            
+    if (updatedNote.getTitle() != null && updatedNote.getTitle().trim().length() > 0) {            
       note.setTitle(updatedNote.getTitle());
+    } else {
+      throw new NoteException(
+        "Note",
+        "title",
+        note.getTitle(),
+        "missing title in request body",
+        HttpStatus.UNPROCESSABLE_ENTITY,
+        NoteStatus.VALIDATION_ERROR
+      );
     }
 
     if (updatedNote.getContent() != null) {

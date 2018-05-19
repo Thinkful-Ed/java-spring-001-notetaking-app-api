@@ -1,5 +1,6 @@
 package com.thinkful.noteful.users;
 
+import com.fasterxml.jackson.annotation.JsonAlias;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import java.util.Date;
 import javax.persistence.Column;
@@ -27,6 +28,8 @@ public class User {
 
   private String username;
   private String password;
+  
+  @JsonAlias("fullname")
   private String fullName;
 
   @Column(nullable = false, updatable = false)

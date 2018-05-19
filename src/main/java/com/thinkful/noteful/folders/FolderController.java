@@ -58,6 +58,18 @@ public class FolderController {
    */
   @RequestMapping(method = RequestMethod.POST)
   public Folder createfolder(@RequestBody Folder folder) {
+
+    if (folder.getName() == null || folder.getName().trim().length() == 0) {
+      throw new NoteException(
+        "Folder",
+        "name",
+        folder.getName(),
+        "missing name in request body",
+        HttpStatus.UNPROCESSABLE_ENTITY,
+        NoteStatus.VALIDATION_ERROR
+      );
+    }
+
     String username = SecurityContextHolder
           .getContext()
           .getAuthentication()
@@ -73,7 +85,18 @@ public class FolderController {
    */
   @RequestMapping(value = "/{id}", method = RequestMethod.PUT)
   public Folder updatefolder(@PathVariable(value = "id")Long folderId, 
-        @RequestBody Folder updatedfolder) {
+        @RequestBody Folder updatedFolder) {
+
+    if (updatedFolder.getName() == null || updatedFolder.getName().trim().length() == 0) {
+      throw new NoteException(
+        "Folder",
+        "name",
+        updatedFolder.getName(),
+        "missing name in request body",
+        HttpStatus.UNPROCESSABLE_ENTITY,
+        NoteStatus.VALIDATION_ERROR
+      );
+    }      
     Folder folder = folderRepository.findById(folderId)
           .orElseThrow(() -> new NoteException(
                 "Folder", 
@@ -83,7 +106,7 @@ public class FolderController {
                 HttpStatus.UNPROCESSABLE_ENTITY,
                 NoteStatus.DATA_INTEGRITY_ERROR));
 
-    folder.setName(updatedfolder.getName());
+    folder.setName(updatedFolder.getName());
 
     Folder updated = folderRepository.save(folder);
     return updated;

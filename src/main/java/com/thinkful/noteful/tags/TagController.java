@@ -58,6 +58,18 @@ public class TagController {
    */
   @RequestMapping(method = RequestMethod.POST)
   public Tag createTag(@RequestBody Tag tag) {
+
+    if (tag.getName() == null || tag.getName().trim().length() == 0) {
+      throw new NoteException(
+        "Tag",
+        "name",
+        tag.getName(),
+        "missing name in request body",
+        HttpStatus.UNPROCESSABLE_ENTITY,
+        NoteStatus.VALIDATION_ERROR
+      );
+    }
+
     String username = SecurityContextHolder
           .getContext()
           .getAuthentication()
@@ -75,6 +87,18 @@ public class TagController {
   public Tag updateTag(
         @PathVariable(value = "id")Long tagId, 
         @RequestBody Tag updatedTag) {
+
+    if (updatedTag.getName() == null || updatedTag.getName().trim().length() == 0) {
+      throw new NoteException(
+        "Tag",
+        "name",
+        updatedTag.getName(),
+        "missing name in request body",
+        HttpStatus.UNPROCESSABLE_ENTITY,
+        NoteStatus.VALIDATION_ERROR
+      );
+    }      
+
     Tag tag = tagRepository.findById(tagId)
           .orElseThrow(() -> new NoteException(
             "Tag", 
