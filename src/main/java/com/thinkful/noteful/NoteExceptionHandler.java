@@ -1,7 +1,5 @@
 package com.thinkful.noteful;
 
-import javax.validation.ConstraintViolationException;
-
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -24,6 +22,18 @@ public class NoteExceptionHandler extends ResponseEntityExceptionHandler {
           ex.toString(),
           headers, 
           ex.getStatus(), 
+          req);
+  }
+
+  @ExceptionHandler(value = { Exception.class })
+  protected ResponseEntity<Object> catchAll(Exception ex, WebRequest req) {
+    HttpHeaders headers = new HttpHeaders();
+    headers.add(HttpHeaders.CONTENT_TYPE, "application/json");
+    return handleExceptionInternal(
+          ex, 
+          ex.toString(),
+          headers, 
+          HttpStatus.INTERNAL_SERVER_ERROR, 
           req);
   }
 }

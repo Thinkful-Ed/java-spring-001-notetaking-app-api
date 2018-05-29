@@ -20,7 +20,7 @@ import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 @Table(name = "note_users")
 @EntityListeners(AuditingEntityListener.class)
 @JsonIgnoreProperties(value = {"createdAt", "updatedAt"}, allowGetters = true)
-public class User {
+public class Account {
     
   @Id
   @GeneratedValue(strategy = GenerationType.AUTO)

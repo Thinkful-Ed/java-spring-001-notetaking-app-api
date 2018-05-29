@@ -6,7 +6,7 @@ import static com.thinkful.noteful.auth.SecurityConstants.JWT_SECRET;
 import static com.thinkful.noteful.auth.SecurityConstants.TOKEN_PREFIX;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.thinkful.noteful.users.User;
+import com.thinkful.noteful.users.Account;
 
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
@@ -43,8 +43,8 @@ public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilte
         HttpServletRequest req, 
         HttpServletResponse res) throws AuthenticationException {
     try {
-      User credentials = new ObjectMapper()
-            .readValue(req.getInputStream(), User.class);
+      Account credentials = new ObjectMapper()
+            .readValue(req.getInputStream(), Account.class);
       return authenticationManager.authenticate(
             new UsernamePasswordAuthenticationToken(
                   credentials.getUsername(), 

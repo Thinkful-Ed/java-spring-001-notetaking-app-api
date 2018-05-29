@@ -6,7 +6,7 @@ import com.thinkful.noteful.folders.Folder;
 import com.thinkful.noteful.folders.FolderRepository;
 import com.thinkful.noteful.tags.Tag;
 import com.thinkful.noteful.tags.TagRepository;
-import com.thinkful.noteful.users.User;
+import com.thinkful.noteful.users.Account;
 import com.thinkful.noteful.users.UserRepository;
 
 import java.util.ArrayList;
@@ -109,7 +109,7 @@ public class NoteController {
           .getAuthentication()
           .getPrincipal()
           .toString();
-    User user = userRepository.findByUsername(username);
+    Account user = userRepository.findByUsername(username);
     note.setUser(user);
 
     return notesRepository.save(note);

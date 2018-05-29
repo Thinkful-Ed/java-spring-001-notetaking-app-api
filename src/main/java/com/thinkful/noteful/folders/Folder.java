@@ -5,7 +5,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.thinkful.noteful.notes.Note;
-import com.thinkful.noteful.users.User;
+import com.thinkful.noteful.users.Account;
 import java.util.Date;
 import java.util.List;
 import javax.persistence.Column;
@@ -58,7 +58,7 @@ public class Folder {
   @ManyToOne
   @JoinColumn(name = "userid")
   @JsonAlias({"userId"})
-  private User user;
+  private Account user;
 
   @Column(nullable = false, updatable = false)
   @Temporal(TemporalType.TIMESTAMP)
@@ -106,11 +106,11 @@ public class Folder {
     this.notes = notes;
   }
 
-  public User getUser() {
+  public Account getUser() {
     return this.user;
   }
 
-  public void setUser(User user) {
+  public void setUser(Account user) {
     this.user = user;
   }
 

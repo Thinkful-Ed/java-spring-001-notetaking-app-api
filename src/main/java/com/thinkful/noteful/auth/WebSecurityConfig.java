@@ -1,6 +1,7 @@
 package com.thinkful.noteful.auth;
 
 import static com.thinkful.noteful.auth.SecurityConstants.SIGN_UP_URL;
+import static com.thinkful.noteful.auth.SecurityConstants.SIGN_UP_URL_WITH_SLASH;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -44,6 +45,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
       .disable()
       .authorizeRequests()
       .antMatchers(HttpMethod.POST, SIGN_UP_URL).permitAll()
+      .antMatchers(HttpMethod.POST, SIGN_UP_URL_WITH_SLASH).permitAll()
       .anyRequest().authenticated()
       .and()
       .addFilter(new JwtAuthenticationFilter(authenticationManager()))

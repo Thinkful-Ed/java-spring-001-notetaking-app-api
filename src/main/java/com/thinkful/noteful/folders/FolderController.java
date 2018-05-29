@@ -2,7 +2,7 @@ package com.thinkful.noteful.folders;
 
 import com.thinkful.noteful.NoteException;
 import com.thinkful.noteful.NoteStatus;
-import com.thinkful.noteful.users.User;
+import com.thinkful.noteful.users.Account;
 import com.thinkful.noteful.users.UserRepository;
 
 import java.util.ArrayList;
@@ -75,7 +75,7 @@ public class FolderController {
           .getAuthentication()
           .getPrincipal()
           .toString();
-    User user = userRepository.findByUsername(username);
+    Account user = userRepository.findByUsername(username);
     folder.setUser(user);
     return folderRepository.save(folder);
   }

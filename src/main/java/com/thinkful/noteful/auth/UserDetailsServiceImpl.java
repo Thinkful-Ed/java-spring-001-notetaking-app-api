@@ -2,7 +2,7 @@ package com.thinkful.noteful.auth;
 
 import static java.util.Collections.emptyList;
 
-import com.thinkful.noteful.users.User;
+import com.thinkful.noteful.users.Account;
 import com.thinkful.noteful.users.UserRepository;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,7 +19,7 @@ public class UserDetailsServiceImpl implements UserDetailsService {
 
   @Override
   public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-    User user = userRepository.findByUsername(username);
+    Account user = userRepository.findByUsername(username);
     if (user == null) {
       throw new UsernameNotFoundException(username);
     }

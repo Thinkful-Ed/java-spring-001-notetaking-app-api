@@ -5,7 +5,7 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.thinkful.noteful.folders.Folder;
 import com.thinkful.noteful.tags.Tag;
-import com.thinkful.noteful.users.User;
+import com.thinkful.noteful.users.Account;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -48,7 +48,7 @@ public class Note {
   @ManyToOne
   @JoinColumn(name = "userid")
   @JsonAlias({"userId"})
-  private User user;
+  private Account user;
 
   @ManyToOne
   @JsonAlias({"folderId"})
@@ -135,11 +135,11 @@ public class Note {
     this.updatedAt = updatedAt;
   }
 
-  public User getUser() {
+  public Account getUser() {
     return this.user;
   }
 
-  public void setUser(User user) {
+  public void setUser(Account user) {
     this.user = user;
   }
 
