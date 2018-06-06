@@ -1,8 +1,15 @@
 package com.thinkful.noteful.tags;
 
+import com.fasterxml.jackson.annotation.JsonAlias;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import com.thinkful.noteful.notes.Note;
+import com.thinkful.noteful.users.Account;
+
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EntityListeners;
@@ -17,82 +24,102 @@ import javax.persistence.TemporalType;
 import javax.validation.constraints.NotBlank;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
-
-import com.fasterxml.jackson.annotation.JsonAlias;
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import com.thinkful.noteful.notes.Note;
-import com.thinkful.noteful.users.User;
-
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 @Entity
 @EntityListeners(AuditingEntityListener.class)
-@JsonIgnoreProperties(value={"createdAt", "updatedAt"}, allowGetters = true)
+@JsonIgnoreProperties(value = {"createdAt", "updatedAt"}, allowGetters = true)
+@JsonSerialize(using = TagSerializer.class)
 public class Tag {
 
-   @Id
-   @GeneratedValue( strategy = GenerationType.AUTO)
-   private Long id; 
+  public Tag() {}
 
-   @NotBlank
-    private String name;
+  public Tag(Long id) {
+    this.id = id;
+  }
 
-    @ManyToMany(mappedBy = "tags")
-    private List<Note> notes;
+  /**
+   * Simple convenience for interpreting ids sent as strings via HTTP.
+   */
+  public Tag(String id) {
+    this(Long.parseLong(id));
+  }
 
-    @ManyToOne
-    @JoinColumn(name="userid")
-    @JsonAlias({"userId"})
-    private User user;
+  @Id
+  @GeneratedValue(strategy = GenerationType.AUTO)
+  private Long id; 
 
-    @Column(nullable = false, updatable = false)
-    @Temporal(TemporalType.TIMESTAMP)
-    @CreatedDate
-    private Date createdAt;
+  @NotBlank
+  private String name;
 
-    @Column(nullable = false)
-    @Temporal(TemporalType.TIMESTAMP)
-    @LastModifiedDate
-    private Date updatedAt;
+  @ManyToMany(mappedBy = "tags")
+  @JsonIgnore
+  private List<Note> notes;
 
-    public String getName(){
-        return this.name;
+  @ManyToOne
+  @JoinColumn(name = "userid")
+  @JsonAlias({"userId"})
+  private Account user;
+
+  @Column(nullable = false, updatable = false)
+  @Temporal(TemporalType.TIMESTAMP)
+  @CreatedDate
+  private Date createdAt;
+
+  @Column(nullable = false)
+  @Temporal(TemporalType.TIMESTAMP)
+  @LastModifiedDate
+  private Date updatedAt;
+
+  public void addNote(Note note) {
+    if(this.notes == null) {
+      this.notes = new ArrayList<>();
     }
+    this.notes.add(note);
+  }
 
-    public void setName(String name){
-        this.name = name;
-    }
+  public Long getId(){
+    return this.id;
+  }
 
-    public Date getCreatedAt(){
-        return this.createdAt;
-    }
+  public String getName() {
+    return this.name;
+  }
 
-    public void setCreatedAt(Date createdAt){
-        this.createdAt = createdAt;
-    }
+  public void setName(String name) {
+    this.name = name;
+  }
 
-    public Date getUpdatedAt(){
-        return this.updatedAt;
-    }
+  public Date getCreatedAt() {
+    return this.createdAt;
+  }
 
-    public void setUpdatedAt(Date updatedAt){
-        this.updatedAt = updatedAt;
-    }
+  public void setCreatedAt(Date createdAt) {
+    this.createdAt = createdAt;
+  }
 
-    public List<Note> getNotes(){
-        return this.notes;
-    }
+  public Date getUpdatedAt() {
+    return this.updatedAt;
+  }
 
-    public void setNotes(List<Note> notes){
-        this.notes = notes;
-    }
+  public void setUpdatedAt(Date updatedAt) {
+    this.updatedAt = updatedAt;
+  }
 
-    public User getUser(){
-        return this.user;
-    }
+  public List<Note> getNotes() {
+    return this.notes;
+  }
 
-    public void setUser(User user){
-        this.user = user;
-    }
+  public void setNotes(List<Note> notes) {
+    this.notes = notes;
+  }
+
+  public Account getUser() {
+    return this.user;
+  }
+
+  public void setUser(Account user) {
+    this.user = user;
+  }
 
 }

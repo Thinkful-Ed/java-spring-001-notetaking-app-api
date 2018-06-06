@@ -10,6 +10,10 @@ buildscript {
 	}
 }
 
+plugins {
+	id "org.asciidoctor.convert" version "1.5.3"
+}
+
 apply plugin: 'java'
 apply plugin: 'eclipse-wtp'
 apply plugin: 'org.springframework.boot'
@@ -28,15 +32,39 @@ configurations {
 	providedRuntime
 }
 
+ext {
+		snippetsDir = file("$buildDir/javadoc")
+}
+
+test { 
+	outputs.dir snippetsDir
+}
+
+asciidoctor { 
+	inputs.dir snippetsDir 
+	dependsOn test 
+}
+
+jar {
+	dependsOn asciidoctor 
+	from ("${asciidoctor.outputDir}/html5") { 
+		into 'static/docs'
+	}
+}
+
 dependencies {
 	compile('org.springframework.boot:spring-boot-starter-data-jpa')
 	compile('org.springframework.boot:spring-boot-starter-data-rest')
 	compile('org.springframework.boot:spring-boot-starter-security')
 	compile('org.springframework.boot:spring-boot-starter-web')
+	compile('io.jsonwebtoken:jjwt:0.9.0')
 	runtime('org.springframework.boot:spring-boot-devtools')
 	runtime('org.postgresql:postgresql')
 	providedRuntime('org.springframework.boot:spring-boot-starter-tomcat')
 	testCompile('org.springframework.boot:spring-boot-starter-test')
 	testCompile('org.springframework.restdocs:spring-restdocs-mockmvc')
 	testCompile('org.springframework.security:spring-security-test')
+	testCompile('org.junit.jupiter:junit-jupiter-api:5.2.0')
+	testRuntime('org.junit.jupiter:junit-jupiter-engine:5.2.0')
+	asciidoctor('org.springframework.restdocs:spring-restdocs-asciidoctor:2.0.1.RELEASE')
 }
